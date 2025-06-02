@@ -22,7 +22,7 @@ document
 
     try {
       // Save data to backend
-      const response = await fetch("http://localhost:3000/api/students", {
+      const response = await fetch("https://certificate-backend-sii1.onrender.com/api/students", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, score }),
