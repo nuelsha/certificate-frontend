@@ -59,7 +59,8 @@ document
 
     // Add company logo (placeholder base64 or URL)
     // Replace with your logo's base64 string or URL
-    const logoUrl = "https://via.placeholder.com/50x50.png?text=Logo"; // Placeholder
+    const logoUrl = 'https://placehold.co/50x50?text=Logo';
+; // Placeholder
     try {
       pdf.addImage(logoUrl, "PNG", 20, 20, 30, 30);
     } catch (error) {
