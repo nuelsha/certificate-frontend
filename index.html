@@ -2,56 +2,174 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Certificate Generator</title>
-    <link rel="stylesheet" href="style.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <title>Elegant Certificate</title>
+    <style>
+      body {
+        margin: 0;
+        background: #f0f0f5;
+        font-family: "Georgia", serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px;
+      }
+
+      .certificate {
+        width: 1000px;
+        padding: 60px;
+        background: #fff;
+        border: 12px solid #d4af37;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+        text-align: center;
+        position: relative;
+      }
+
+      .logo {
+        width: 80px;
+        height: 80px;
+        background-color: #ccc;
+        border-radius: 50%;
+        margin: 0 auto 20px;
+        line-height: 80px;
+        font-size: 22px;
+        color: #333;
+      }
+
+      .certificate h2 {
+        font-size: 38px;
+        color: #b58e00;
+        margin-bottom: 10px;
+      }
+
+      .divider {
+        width: 80%;
+        height: 2px;
+        background: #ccc;
+        margin: 30px auto;
+      }
+
+      .certificate p {
+        font-size: 20px;
+        color: #444;
+        margin: 16px 0;
+      }
+
+      .editable {
+        display: inline-block;
+        border-bottom: 2px dashed #999;
+        min-width: 250px;
+        padding: 4px 10px;
+        font-size: 24px;
+        background-color: #fcfcfc;
+        color: #000;
+        cursor: text;
+      }
+
+      .highlight {
+        font-size: 30px;
+        font-weight: bold;
+        color: #000;
+        margin: 25px 0;
+      }
+
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 40px;
+        font-size: 18px;
+      }
+
+      .footer div {
+        flex: 1;
+        padding: 0 20px;
+      }
+
+      .footer .right {
+        text-align: right;
+      }
+
+      #downloadBtn {
+        margin-top: 40px;
+        padding: 14px 30px;
+        font-size: 18px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      #downloadBtn:hover {
+        background-color: #0056b3;
+      }
+    </style>
   </head>
   <body>
-    <div class="container">
-      <div class="form-card">
-        <h1>🎓 Certificate Generator</h1>
-        <form id="certificateForm">
-          <div class="input-group">
-            <label for="name">Name</label>
-            <input
-              type="text"
-              id="name"
-              placeholder="Enter your full name"
-              required
-            />
-          </div>
-          <div class="input-group">
-            <label for="score">Score</label>
-            <input
-              type="number"
-              id="score"
-              placeholder="Enter your score (0-100)"
-              min="0"
-              max="100"
-              required
-            />
-          </div>
-          <button type="submit" id="generateBtn">
-            <span class="btn-text">Generate PDF</span>
-            <span class="spinner hidden">⏳</span>
-          </button>
-        </form>
-        <div id="successMessage" class="success-message hidden">
-          Certificate generated successfully! Check your downloads.
-        </div>
+    <div class="certificate" id="certificateArea">
+  
+
+      <h2>Certificate of Achievement</h2>
+
+      <p>This is to certify that</p>
+      <div contenteditable="true" class="editable" id="nameField">
+        [Enter Recipient Name]
       </div>
-      <div id="preview" class="preview-area">
-        <p class="preview-placeholder">
-          Certificate preview will appear here...
-        </p>
+
+      <p>has successfully completed the course</p>
+      <div contenteditable="true" class="editable highlight" id="courseField">
+        HTML & CSS Mastery Course
+      </div>
+
+      <p>on</p>
+      <div contenteditable="true" class="editable" id="dateField">
+        June 5, 2025
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="footer">
+        <div class="left">
+          Instructor:<br />
+          <div contenteditable="true" class="editable" id="instructorField">
+            John Doe
+          </div>
+        </div>
+        <div class="right">
+          Certificate ID:<br />
+          <div contenteditable="true" class="editable" id="certID">
+            #123456789
+          </div>
+        </div>
       </div>
     </div>
 
+    <button id="downloadBtn">Download Certificate</button>
+
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="script.js"></script>
+
+    <script>
+      document
+        .getElementById("downloadBtn")
+        .addEventListener("click", async () => {
+          const { jsPDF } = window.jspdf;
+          const certificate = document.getElementById("certificateArea");
+
+          const canvas = await html2canvas(certificate, {
+            scale: 2,
+            useCORS: true,
+          });
+
+          const imgData = canvas.toDataURL("image/png");
+          const pdf = new jsPDF("landscape", "px", [
+            canvas.width,
+            canvas.height,
+          ]);
+          pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+          pdf.save("Certificate.pdf");
+        });
+    </script>
   </body>
 </html>
